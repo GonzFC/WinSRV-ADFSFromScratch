@@ -9,68 +9,71 @@
 - [x] Create TASKS.md
 - [x] Create STATUS.md
 - [x] Create DIRECTIVES.md
-- [ ] Create module directory structure
-- [ ] Create template directory structure
+- [x] Create module directory structure
+- [x] Create template directory structure
 
 ### 1.2 TUI Menu System (`modules/Menu.psm1`)
-- [ ] Implement `Show-Menu` function with keyboard navigation
-- [ ] Implement `Show-Banner` for wizard header
-- [ ] Implement `Show-Progress` for step tracking
-- [ ] Implement `Read-SecureInput` for password/secret entry
-- [ ] Implement `Show-Confirmation` for destructive actions
-- [ ] Implement `Write-StatusLine` for colored output
-- [ ] Implement `Show-Table` for data display
+- [x] Implement `Show-WizardMenu` function with keyboard navigation
+- [x] Implement `Show-WizardBanner` for wizard header
+- [x] Implement `Show-WizardProgress` for step tracking
+- [x] Implement `Read-WizardSecureInput` for password/secret entry
+- [x] Implement `Show-WizardConfirmation` for destructive actions
+- [x] Implement `Write-WizardStatus` for colored output
+- [x] Implement `Show-WizardTable` for data display
+- [x] Implement `Show-WizardChecklist` for pass/fail displays
 - [ ] Test rendering in Server Core environment
 - [ ] Test rendering over SSH session
 
 ### 1.3 State Management (`modules/State.psm1`)
-- [ ] Define state schema (JSON structure)
-- [ ] Implement `Initialize-WizardState`
-- [ ] Implement `Save-WizardState`
-- [ ] Implement `Get-WizardState`
-- [ ] Implement `Update-WizardStep`
-- [ ] Implement `Test-StepCompleted`
-- [ ] Implement state migration for version upgrades
-- [ ] Create state directory (`C:\ADFSFromScratch\State\`)
-- [ ] Handle concurrent execution prevention (lock file)
+- [x] Define state schema (JSON structure)
+- [x] Implement `Get-WizardState`
+- [x] Implement `Save-WizardState`
+- [x] Implement `Set-WizardStateValue` / `Get-WizardStateValue`
+- [x] Implement `Set-StepComplete` / `Test-StepComplete`
+- [x] Implement state migration for version upgrades
+- [x] Handle concurrent execution prevention (lock file)
+- [x] Implement `Test-HasPreviousSession` for resume detection
+- [x] Implement `Reset-WizardState` for fresh start
 
-### 1.4 Logging Infrastructure
-- [ ] Implement `Start-WizardTranscript`
-- [ ] Implement `Stop-WizardTranscript`
-- [ ] Implement `Write-WizardLog` (structured logging)
-- [ ] Create log directory (`C:\ADFSFromScratch\Logs\`)
-- [ ] Implement log rotation (keep last 10 sessions)
+### 1.4 Logging Infrastructure (`modules/Logging.psm1`)
+- [x] Implement `Start-WizardTranscript`
+- [x] Implement `Stop-WizardTranscript`
+- [x] Implement `Write-WizardLog` (structured logging)
+- [x] Implement log rotation (keep last 10 sessions)
+- [x] Implement `Export-WizardLogs` for troubleshooting
 
 ---
 
 ## Phase 2: Prerequisites Module
 
 ### 2.1 Environment Validation (`modules/Prerequisites.psm1`)
-- [ ] `Test-IsServerCore` - Detect if running on Core
-- [ ] `Test-IsDomainJoined` - Verify domain membership
-- [ ] `Test-IsNotDomainController` - Refuse to run on DC
-- [ ] `Test-AdminPrivileges` - Check for elevation
-- [ ] `Test-PowerShellVersion` - Require 5.1+
-- [ ] `Test-WindowsVersion` - Require Server 2019+
-- [ ] `Test-RequiredModules` - Check for ADDSDeployment, ADFS modules
+- [x] `Test-IsServerCore` - Detect if running on Core
+- [x] `Test-IsDomainJoined` - Verify domain membership
+- [x] `Test-IsNotDomainController` - Refuse to run on DC
+- [x] `Test-AdminPrivileges` - Check for elevation
+- [x] `Test-PowerShellVersion` - Require 5.1+
+- [x] `Test-WindowsVersion` - Require Server 2019+
+- [x] `Test-RequiredModules` - Check for AD, ADFS modules
 
 ### 2.2 Network Validation
-- [ ] `Test-DomainControllerConnectivity` - LDAP/Kerberos to DC
-- [ ] `Test-DNSResolution` - Internal DNS working
-- [ ] `Test-InternetConnectivity` - Can reach Let's Encrypt, etc.
-- [ ] `Get-NetworkConfiguration` - Display current IP, DNS, gateway
+- [x] `Test-DomainControllerConnectivity` - LDAP/Kerberos to DC
+- [x] `Test-DNSResolution` - Internal DNS working
+- [x] `Test-InternetConnectivity` - Can reach Let's Encrypt, etc.
+- [x] `Get-NetworkConfiguration` - Display current IP, DNS, gateway
 
 ### 2.3 Active Directory Validation
-- [ ] `Test-ADForestFunctionalLevel` - Minimum 2012 R2 for gMSA
-- [ ] `Test-KDSRootKey` - Check if gMSA can be created
-- [ ] `New-KDSRootKeyIfMissing` - Create KDS root key (with warning)
-- [ ] `Test-ADFSServiceAccountExists` - Check if gMSA already exists
+- [x] `Test-ADForestFunctionalLevel` - Minimum 2012 R2 for gMSA
+- [x] `Test-KDSRootKey` - Check if gMSA can be created
+- [x] `New-KDSRootKeyIfMissing` - Create KDS root key (with warning)
+- [x] `Test-ADFSServiceAccountExists` - Check if gMSA already exists
 
 ### 2.4 Prerequisites Wizard Step
-- [ ] Combine all checks into single wizard step
-- [ ] Display results in table format
-- [ ] Block progression if critical checks fail
-- [ ] Allow skipping warnings with confirmation
+- [x] Combine all checks into single wizard step
+- [x] Display results in checklist format
+- [x] Block progression if critical checks fail
+- [x] Allow skipping warnings with confirmation
+- [x] Offer to create KDS Root Key if missing
+- [x] Install required Windows features if missing
 
 ---
 
@@ -79,19 +82,19 @@
 ### 3.1 Certificate Module (`modules/Certificates.psm1`)
 - [ ] `Get-ADFSCertificateRequirements` - Document what certs are needed
 - [ ] `Test-CertificateExists` - Check for existing ADFS cert
-- [ ] `New-SelfSignedADFSCertificate` - For testing only
-- [ ] `Import-PFXCertificate` - Import existing cert
+- [x] Self-signed certificate generation (built into wizard step)
+- [x] PFX import (built into wizard step)
 - [ ] `Request-LetsEncryptCertificate` - ACME via win-acme
 - [ ] `Install-WinAcme` - Download and install win-acme
 - [ ] `Test-CertificateValidity` - Check expiry, chain, etc.
-- [ ] `Get-CertificateThumbprint` - Helper function
 
 ### 3.2 Certificate Wizard Step
-- [ ] Menu: Self-signed / Import PFX / Let's Encrypt
-- [ ] Prompt for federation service name (FQDN)
-- [ ] Validate FQDN is DNS-resolvable
-- [ ] Execute certificate acquisition
-- [ ] Store certificate info in state
+- [x] Menu: Self-signed / Import PFX / Let's Encrypt / Skip
+- [x] Prompt for federation service name (FQDN)
+- [x] Validate FQDN is DNS-resolvable
+- [x] Execute certificate acquisition
+- [x] Store certificate info in state
+- [ ] Let's Encrypt integration (placeholder)
 
 ---
 
@@ -205,19 +208,19 @@
 ## Phase 8: Main Wizard Integration
 
 ### 8.1 Entry Point (`Start-ADFSWizard.ps1`)
-- [ ] Parameter handling (resume, skip checks, etc.)
-- [ ] Module loading (download if needed for iex scenario)
-- [ ] State initialization
-- [ ] Main menu loop
-- [ ] Step orchestration
-- [ ] Error handling and recovery
-- [ ] Clean exit
+- [x] Parameter handling (Resume, SkipPrerequisites, Reset)
+- [x] Module loading (download if needed for iex scenario)
+- [x] State initialization
+- [x] Main menu loop
+- [x] Step orchestration
+- [x] Error handling and recovery
+- [x] Clean exit with lock cleanup
 
 ### 8.2 Wizard Flow
-- [ ] Welcome screen with disclaimer
-- [ ] Resume detection and prompt
-- [ ] Main menu with step status
-- [ ] Sequential step execution
+- [x] Welcome screen with disclaimer
+- [x] Resume detection and prompt
+- [x] Main menu with step status indicators
+- [x] Sequential step execution with dependencies
 - [ ] Final summary and next steps
 
 ---
