@@ -1,54 +1,66 @@
 # Project Status
 
-> Last Updated: 2024-12-04
+> Last Updated: 2024-12-04 (End of Session 1)
 
-## Current Phase: Core Implementation Complete - Ready for ADFS Module
+## Current State: Core Infrastructure Complete
+
+**Ready for:** ADFS Installation Module (Phase 5)
+
+**Quick Resume:** Read `CLAUDE.md` for fast context loading.
 
 ## Overall Progress
 
-| Phase | Status | Progress |
-|-------|--------|----------|
-| 1. Core Infrastructure | **Complete** | 100% |
-| 2. Prerequisites Module | **Complete** | 100% |
-| 3. Certificate Management | Partial | 60% |
-| 4. Port/Connectivity Testing | Not Started | 0% |
-| 5. ADFS Installation | Not Started | 0% |
-| 6. Application Registration | Not Started | 0% |
-| 7. Validation and Testing | Not Started | 0% |
-| 8. Main Wizard Integration | **Complete** | 90% |
-| 9. Documentation and Polish | In Progress | 30% |
+| Phase | Status | Progress | Notes |
+|-------|--------|----------|-------|
+| 1. Core Infrastructure | **Complete** | 100% | Menu, State, Logging |
+| 2. Prerequisites Module | **Complete** | 100% | 15+ checks |
+| 3. Certificate Management | Partial | 60% | Missing Let's Encrypt |
+| 4. Port/Connectivity Testing | Not Started | 0% | |
+| 5. ADFS Installation | Not Started | 0% | **Next priority** |
+| 6. Application Registration | Not Started | 0% | Tailscale template |
+| 7. Validation and Testing | Not Started | 0% | |
+| 8. Main Wizard Integration | **Complete** | 90% | Steps 1-3 working |
+| 9. Documentation and Polish | In Progress | 50% | |
 
 ## What's Working Now
 
-The wizard is **functional** with the following capabilities:
+### Wizard Steps
+| Step | Status | What It Does |
+|------|--------|--------------|
+| 1. Prerequisites | **Working** | Checks admin, DC connectivity, gMSA support, creates KDS key |
+| 2. Network | **Working** | Gets federation FQDN, validates DNS |
+| 3. Certificates | **Working** | Self-signed, PFX import, existing cert selection |
+| 4-8 | Placeholder | Shows "not implemented" message |
 
-1. **TUI Menu System** - Full keyboard navigation, colored output, checklists
-2. **State Management** - JSON-based persistence, resume capability, lock files
-3. **Logging** - Transcript logging, log rotation, structured logs
-4. **Prerequisites Check** - All environment, network, and AD validations
-5. **Network Configuration** - Federation service name input, DNS validation
-6. **Certificate Options** - Self-signed generation, PFX import, existing cert selection
+### Core Features
+- TUI with keyboard navigation (arrow keys, numbers, enter)
+- State persistence (JSON) with resume capability
+- Lock files prevent concurrent execution
+- Transcript logging with rotation
+- Module auto-loading from local or GitHub
 
 ## Files Created
 
 ```
 WinSRV-ADFSFromScratch/
-├── Start-ADFSWizard.ps1         # Main entry point (588 lines)
+├── Start-ADFSWizard.ps1      # 588 lines - Main wizard
 ├── modules/
-│   ├── Menu.psm1                # TUI system (456 lines)
-│   ├── State.psm1               # State management (389 lines)
-│   ├── Logging.psm1             # Logging infrastructure (198 lines)
-│   └── Prerequisites.psm1       # Environment checks (478 lines)
-├── templates/
-│   └── apps/                    # (empty - for app templates)
-├── README.md
-├── GOALS.md
-├── TASKS.md
-├── STATUS.md
-└── DIRECTIVES.md
+│   ├── Menu.psm1             # 456 lines - TUI system
+│   ├── State.psm1            # 389 lines - Persistence
+│   ├── Logging.psm1          # 198 lines - Transcripts
+│   └── Prerequisites.psm1    # 478 lines - Checks
+├── templates/apps/           # Empty (for app templates)
+├── README.md                 # User documentation
+├── GOALS.md                  # 10 objectives
+├── TASKS.md                  # Detailed task breakdown
+├── STATUS.md                 # This file
+├── DIRECTIVES.md             # Coding standards
+├── ARCHITECTURE.md           # System design diagrams
+└── CLAUDE.md                 # Quick context for AI resume
 ```
 
-**Total PowerShell code: ~2,100 lines**
+**Total PowerShell:** ~2,100 lines
+**Total Documentation:** ~1,500 lines
 
 ## Milestone Tracking
 
@@ -72,7 +84,7 @@ WinSRV-ADFSFromScratch/
 - [x] PFX import working
 - [ ] Let's Encrypt integration (win-acme)
 
-### Milestone 4: ADFS Installable
+### Milestone 4: ADFS Installable (Next)
 - [ ] Windows feature installation
 - [ ] gMSA account creation
 - [ ] ADFS farm configuration
@@ -95,7 +107,7 @@ WinSRV-ADFSFromScratch/
 | ID | Description | Severity | Status |
 |----|-------------|----------|--------|
 | 1 | Let's Encrypt not yet integrated | Medium | Planned |
-| 2 | Steps 4-8 show "not implemented" placeholder | Medium | In Progress |
+| 2 | Steps 4-8 show placeholder | Medium | In Progress |
 
 ---
 
@@ -103,37 +115,67 @@ WinSRV-ADFSFromScratch/
 
 | Date | Decision | Rationale |
 |------|----------|-----------|
-| 2024-12-04 | Use Nginx reverse proxy instead of WAP | Lighter weight, easier Let's Encrypt |
-| 2024-12-04 | Target Windows Server 2019 | User's environment, stable platform |
-| 2024-12-04 | Use gMSA for service account | Security best practice |
-| 2024-12-04 | Use WID not SQL | Single-server deployment, simpler |
-| 2024-12-04 | Skip signature validation for iex | User accepts risk, simplicity preferred |
-| 2024-12-04 | MFA deferred to future version | Focus on core functionality first |
-| 2024-12-04 | Inline certificate handling | Simpler than separate module for now |
+| 2024-12-04 | Nginx reverse proxy (not WAP) | Lighter, easier Let's Encrypt, user preference |
+| 2024-12-04 | Windows Server 2019 target | User's environment |
+| 2024-12-04 | gMSA service account | Security best practice |
+| 2024-12-04 | WID database (not SQL) | Single-server, simple backup |
+| 2024-12-04 | Skip iex signature validation | User trusts their own script |
+| 2024-12-04 | MFA deferred to v2 | Focus on core functionality |
+| 2024-12-04 | Inline certificate handling | Simpler than separate module |
 
 ---
 
-## Next Actions
+## Next Session Priorities
 
-1. **Build ADFS.psm1** - Core ADFS installation and configuration
-2. **Build Connectivity.psm1** - Port testing module
-3. **Implement Tailscale template** - First app integration
-4. **Create Nginx configuration guide** - User documentation
+### Priority 1: ADFS Installation Module
+Create `modules/ADFS.psm1`:
+- `Install-ADFSWindowsFeature`
+- `New-ADFSGMSAAccount`
+- `Install-ADFSFarm`
+- `Test-ADFSHealth`
+
+### Priority 2: Wire Up Step 5
+Update `Start-ADFSWizard.ps1` to use ADFS module
+
+### Priority 3: Application Templates
+Create `modules/Applications.psm1` with Tailscale OIDC
+
+---
+
+## Testing
+
+```powershell
+# From GitHub (current branch)
+iex (irm 'https://raw.githubusercontent.com/GonzFC/WinSRV-ADFSFromScratch/claude/adfs-setup-wizard-01P8WruoZrHowGdBT9DB4Mw4/Start-ADFSWizard.ps1')
+
+# Reset state
+Remove-Item C:\ADFSFromScratch -Recurse -Force
+```
 
 ---
 
 ## Session Log
 
-### 2024-12-04 - Session 1
-- Initial planning session
-- Defined architecture (ADFS Server + Nginx Proxy + DC)
-- Clarified requirements with user
-- Created documentation structure
+### 2024-12-04 - Session 1 (Complete)
 
-### 2024-12-04 - Session 2
-- Built complete TUI menu system (Menu.psm1)
-- Built state management with resume capability (State.psm1)
-- Built logging infrastructure (Logging.psm1)
-- Built comprehensive prerequisites checks (Prerequisites.psm1)
-- Built main wizard with 3 working steps (Start-ADFSWizard.ps1)
-- Total: ~2,100 lines of PowerShell
+**What Was Done:**
+1. Planning discussion with user
+2. Challenged assumptions (DC vs member server, WAP vs Nginx)
+3. Documented architecture decisions
+4. Built Menu.psm1 - Full TUI with keyboard navigation
+5. Built State.psm1 - JSON persistence, resume, locking
+6. Built Logging.psm1 - Transcripts with rotation
+7. Built Prerequisites.psm1 - 15+ environment checks
+8. Built Start-ADFSWizard.ps1 - Main wizard with 3 working steps
+9. Created comprehensive documentation (ARCHITECTURE.md, CLAUDE.md)
+
+**Commits:**
+1. `939aed1` - Initial project documentation
+2. `8cf08f3` - Core wizard infrastructure (Phase 1 & 2)
+
+**User Context:**
+- Windows Server 2019 Core (separate from DC)
+- Nginx for reverse proxy
+- Tailscale OIDC as first integration target
+- Prefers minimal, focused servers ("Unix philosophy")
+- Okay with iex deployment from GitHub
